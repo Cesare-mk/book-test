@@ -1,0 +1,43 @@
+server:
+  port: 8080
+
+#配置，MySQL
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/spring_boot?serverTimeZone=UTC
+      username: root
+      password: MM121452.
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计。stat:监控统计 log4:日志记录 wall:防御sql注入
+      # 如果运行时报错：ClassNotFoundException:orgapache.log4j.Priority，则导入log4j依赖即可
+      filters: stat,wall,log4j
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 8 #最大连接
+        min-idle: 0  # 最小空闲连接
+        max-idle: 8 # 最大空闲连接
+        max-wait: 100ms
+    database: 0
+
+
+
+#  transaction:
+#    enable: true
+#  devtools:
+#    restart:
+#      additional-exclude:
+
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tbl_
+      id-type: auto
+      logic-delete-field: deleted
+      logic-not-delete-value: 0
+      logic-delete-value: 1
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
