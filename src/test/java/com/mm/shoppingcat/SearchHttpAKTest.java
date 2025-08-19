@@ -51,7 +51,7 @@ public class SearchHttpAKTest {
      * 用例2：location格式错误（使用非数字字符）
      * 预期：返回坐标无效的错误提示
      */
-    @Test
+ //   @Test
 //    public void testInvalidLocationFormat() throws Exception {
 //        Map<String, String> params = new LinkedHashMap<>();
 //        params.put("query", "银行");
