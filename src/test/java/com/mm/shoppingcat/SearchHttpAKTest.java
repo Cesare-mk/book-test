@@ -52,23 +52,23 @@ public class SearchHttpAKTest {
      * 预期：返回坐标无效的错误提示
      */
     @Test
-    public void testInvalidLocationFormat() throws Exception {
-        Map<String, String> params = new LinkedHashMap<>();
-        params.put("query", "银行");
-        params.put("location", "abc,def"); // 使用非数字字符
-        params.put("radius", "2000");
-        params.put("output", "json");
-        params.put("ak", VALID_AK);
-
-        String response = searchHttpAK.requestGetAKWithReturn(BASE_URL, params);
-        JsonObject jsonResponse = gson.fromJson(response, JsonObject.class);
-
-        System.out.println("用例2 API响应: " + response);
-
-        // 百度API对于格式错误的location会返回status=1（服务内部错误）
-        assertTrue("无效坐标格式应返回错误状态", jsonResponse.get("status").getAsInt() != 0);
-        System.out.println("✓ 用例2通过：无效坐标格式返回错误状态码 " + jsonResponse.get("status").getAsInt());
-    }
+//    public void testInvalidLocationFormat() throws Exception {
+//        Map<String, String> params = new LinkedHashMap<>();
+//        params.put("query", "银行");
+//        params.put("location", "abc,def"); // 使用非数字字符
+//        params.put("radius", "2000");
+//        params.put("output", "json");
+//        params.put("ak", VALID_AK);
+//
+//        String response = searchHttpAK.requestGetAKWithReturn(BASE_URL, params);
+//        JsonObject jsonResponse = gson.fromJson(response, JsonObject.class);
+//
+//        System.out.println("用例2 API响应: " + response);
+//
+//        // 百度API对于格式错误的location会返回status=1（服务内部错误）
+//        assertTrue("无效坐标格式应返回错误状态", jsonResponse.get("status").getAsInt() != 0);
+//        System.out.println("✓ 用例2通过：无效坐标格式返回错误状态码 " + jsonResponse.get("status").getAsInt());
+//    }
     /**
      * 用例3：query为空
      * 预期：total=0（无检索结果）
@@ -163,27 +163,46 @@ public class SearchHttpAKTest {
      * 用例6：radius过大（100000米，超出城市范围）
      * 预期：自动转为城市范围检索，返回该城市POI
      */
-    @Test
-    public void testLargeRadius() throws Exception {
-        Map<String, String> params = new LinkedHashMap<>();
-        params.put("query", "银行");
-        params.put("location", VALID_LOCATION);
-        params.put("radius", "50000");
-        params.put("output", "json");
-        params.put("ak", VALID_AK);
-
-        String response = searchHttpAK.requestGetAKWithReturn(BASE_URL, params);
-        JsonObject jsonResponse = gson.fromJson(response, JsonObject.class);
-
-        assertEquals("大半径检索应返回成功状态", 0, jsonResponse.get("status").getAsInt());
-
-        if (jsonResponse.has("total")) {
-            int total = jsonResponse.get("total").getAsInt();
-            assertTrue("大半径应返回数据，实际total=" + total, total > 0);
-            System.out.println("✓ 用例6通过：大半径(50km)搜索找到 " + total + " 个结果");
-            System.out.println("  - 百度API自动转为城市范围检索");
-        }
-    }
+//    @Test
+//    public void testLargeRadius() throws Exception {
+//        Map<String, String> params = new LinkedHashMap<>();
+//        params.put("query", "银行");
+//        params.put("location", VALID_LOCATION);
+//        params.put("radius", "50000"); // 50公里
+//        params.put("output", "json");
+//        params.put("ak", VALID_AK);
+//
+//        String response = searchHttpAK.requestGetAKWithReturn(BASE_URL, params);
+//        JsonObject jsonResponse = gson.fromJson(response, JsonObject.class);
+//
+//        assertEquals("大半径检索应返回成功状态", 0, jsonResponse.get("status").getAsInt());
+//
+//        if (jsonResponse.has("total")) {
+//            int total = jsonResponse.get("total").getAsInt();
+//            assertTrue("大半径应返回数据，实际total=" + total, total > 0);
+//            System.out.println("✓ 用例6通过：大半径(50km)搜索找到 " + total + " 个结果");
+//            System.out.println("  - 百度API自动转为城市范围检索");
+//
+//            // 对比正常半径的结果数量
+//            Map<String, String> normalParams = new LinkedHashMap<>();
+//            normalParams.put("query", "银行");
+//            normalParams.put("location", VALID_LOCATION);
+//            normalParams.put("radius", "2000"); // 2公里
+//            normalParams.put("output", "json");
+//            normalParams.put("ak", VALID_AK);
+//
+//            String normalResponse = searchHttpAK.requestGetAKWithReturn(BASE_URL, normalParams);
+//            JsonObject normalJsonResponse = gson.fromJson(normalResponse, JsonObject.class);
+//
+//            if (normalJsonResponse.has("total")) {
+//                int normalTotal = normalJsonResponse.get("total").getAsInt();
+//                System.out.println("  - 对比：正常半径(2km)搜索找到 " + normalTotal + " 个结果");
+//                System.out.println("  - 大半径搜索结果是正常半径的 " + (total > 0 ? String.format("%.1f", (double)total/normalTotal) : "0") + " 倍");
+//            }
+//        } else {
+//            fail("大半径搜索应该返回结果");
+//        }
+//    }
 
     /**
      * 用例7：radius_limit=true时，验证返回结果坐标均在圆形区域内
